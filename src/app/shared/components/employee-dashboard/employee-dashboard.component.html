@@ -1,0 +1,249 @@
+<div class="row my-4">
+  <div class="col-md-10">
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label class="filterLabel">Filter</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Search employee"
+        #input
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="col-md-2 text-right d-flex align-items-center">
+    <button
+      mat-raised-button
+      class="Btn w-100 ml-auto mt-2 mt-lg-0"
+      (click)="openForm()"
+    >
+      <strong> Add Employee </strong>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="table-responsive">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8 min-width-table"
+        matSort
+        style="width: 100%"
+      >
+        <!-- No Column -->
+        <ng-container matColumnDef="no">
+          <th mat-header-cell *matHeaderCellDef>Sr No.</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{ i + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editFirstName">
+              {{ row.firstName }}
+            </ng-container>
+            <ng-template #editFirstName>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'firstName')"
+                type="text"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editLastName">
+              {{ row.lastName }}
+            </ng-container>
+            <ng-template #editLastName>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'lastName')"
+                type="text"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editEmail">
+              {{ row.email }}
+            </ng-container>
+            <ng-template #editEmail>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'email')"
+                type="email"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Contact Column -->
+        <ng-container matColumnDef="contact">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editContact">
+              {{ row.contact }}
+            </ng-container>
+            <ng-template #editContact>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'contact')"
+                type="tel"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Gender Column -->
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editGender">
+              {{ row.gender }}
+            </ng-container>
+            <ng-template #editGender>
+              <mat-select [formControl]="getControl(row.id, 'gender')">
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+                <mat-option value="Other">Other</mat-option>
+              </mat-select>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Company Column -->
+        <ng-container matColumnDef="company">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editCompany">
+              {{ row.company }}
+            </ng-container>
+            <ng-template #editCompany>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'company')"
+                type="text"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Education Column -->
+        <ng-container matColumnDef="education">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Education</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editEducation">
+              {{ row.education }}
+            </ng-container>
+            <ng-template #editEducation>
+              <mat-select [formControl]="getControl(row.id, 'education')">
+                <mat-option value="SSC">SSC</mat-option>
+                <mat-option value="HSC">HSC</mat-option>
+                <mat-option value="Diploma">Diploma</mat-option>
+                <mat-option value="Graduation">Graduation</mat-option>
+                <mat-option value="Post Graduation">Post Graduation</mat-option>
+              </mat-select>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Experience Column -->
+        <ng-container matColumnDef="experience">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Experience</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editExperience">
+              {{ row.experience }} years
+            </ng-container>
+            <ng-template #editExperience>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'experience')"
+                type="number"
+                min="0"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- DOB Column -->
+        <ng-container matColumnDef="dob">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Date of Birth
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode; else editDob">
+              {{ row.dob | date : "mediumDate" }}
+            </ng-container>
+            <ng-template #editDob>
+              <input
+                matInput
+                [formControl]="getControl(row.id, 'dob')"
+                [matDatepicker]="picker"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!row.isEditMode">
+              <button mat-icon-button color="primary" (click)="onEdit(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button mat-icon-button color="warn" (click)="onDelete(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="row.isEditMode">
+              <button mat-icon-button color="accent" (click)="onSave(row)">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="onCancel(row)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Table Headers & Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10">
+            No data matching the filter "{{ input.value }}"
+          </td>
+        </tr>
+      </table>
+      <mat-paginator
+        [length]="200"
+        [pageSizeOptions]="[10, 50, 100]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

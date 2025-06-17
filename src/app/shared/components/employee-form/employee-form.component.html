@@ -1,0 +1,194 @@
+<div mat-dialog-title>
+  <h4 class="mb-5">Employee Form</h4>
+</div>
+
+<form [formGroup]="empForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" placeholder="Ex. Jhon" />
+          <mat-error
+            *ngIf="
+              empForm.get('firstName')?.touched &&
+              empForm.get('firstName')?.hasError('required')
+            "
+          >
+            First name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error
+            *ngIf="
+              empForm.get('lastName')?.touched &&
+              empForm.get('lastName')?.hasError('required')
+            "
+          >
+            Last name is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Email Id</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error
+            *ngIf="
+              empForm.get('email')?.touched &&
+              empForm.get('email')?.hasError('required')
+            "
+          >
+            Email is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Contact</mat-label>
+          <input matInput formControlName="contact" />
+          <mat-error
+            *ngIf="
+              empForm.get('contact')?.touched &&
+              empForm.get('contact')?.hasError('required')
+            "
+          >
+            Contact is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mb-0">
+      <div class="col-md-12">
+        <mat-radio-group formControlName="gender">
+          <mat-label class="mr-2"><b>Gender: </b></mat-label>
+          <mat-radio-button value="Female">Female</mat-radio-button>
+          <mat-radio-button class="mx-3" value="Male">Male</mat-radio-button>
+          <mat-radio-button value="Other">Other</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <small class="form-text text-danger mb-3">
+      Please select your gender identity.
+    </small>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput formControlName="dob" [matDatepicker]="picker" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="
+              empForm.get('dob')?.touched &&
+              empForm.get('dob')?.hasError('required')
+            "
+          >
+            Date of Birth is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Education</mat-label>
+          <mat-select formControlName="education">
+            <mat-option *ngFor="let edu of education" [value]="edu">
+              {{ edu }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              empForm.get('education')?.touched &&
+              empForm.get('education')?.hasError('required')
+            "
+          >
+            Education is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Company</mat-label>
+          <input
+            matInput
+            formControlName="company"
+            type="text"
+            placeholder="Ex. Google"
+          />
+          <mat-error
+            *ngIf="
+              empForm.get('company')?.touched &&
+              empForm.get('company')?.hasError('required')
+            "
+          >
+            Company is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Experiance</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="experience"
+            placeholder="Ex. 3"
+          />
+          <mat-error
+            *ngIf="
+              empForm.get('experience')?.touched &&
+              empForm.get('experience')?.hasError('required')
+            "
+          >
+            Experience is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <button
+          mat-raised-button
+          color="primary"
+          class="w-100"
+          [disabled]="empForm.invalid"
+        >
+          Save
+        </button>
+      </div>
+
+      <div class="col-md-6">
+        <button
+          mat-raised-button
+          color="warn"
+          type="button"
+          [mat-dialog-close]="false"
+          class="w-100"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,30 @@
+.bgColor {
+  background-color: #ae6efc;
+}
+
+.logo {
+  color: #efe301;
+  font-size: 20px;
+  font-weight: 600;
+  &:is(:active, :focus, :hover) {
+    color: #fff !important;
+  }
+}
+
+.navLink {
+  font-size: 20px;
+  font-weight: 600;
+  &:is(:active, :focus, :hover) {
+    color: #fff !important;
+    border-bottom: 4px solid #fff;
+  }
+  &.active {
+    color: #efe301 !important;
+    font-size: 20px;
+    font-weight: 600;
+    // padding-bottom: 0;
+    border-bottom: 4px solid #efe301;
+  }
+}
+
+

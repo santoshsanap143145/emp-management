@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-light bgColor">
+  <a class="navbar-brand logo" routerLink="">EMPLOYEE'S</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    aria-controls="navbarSupportedContent"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div
+    [ngbCollapse]="isCollapsed"
+    class="collapse navbar-collapse"
+    id="navbarSupportedContent"
+  >
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link navLink"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+          routerLink="empDashboard"
+          >Employee Details <span class="sr-only">(current)</span></a
+        >
+      </li>
+    </ul>
+    
+  </div>
+</nav>
