@@ -50,6 +50,8 @@ export class EmployeeFormComponent implements OnInit {
       this._employeeService.addemployee(newEmployee).subscribe({
         next: (res => {
           this._dialogref.close({...newEmployee, id: res.name})
+          console.log(res);
+          
         }),
         error: (err => {
           console.log(err);

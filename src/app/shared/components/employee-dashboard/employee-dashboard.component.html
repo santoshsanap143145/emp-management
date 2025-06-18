@@ -1,6 +1,6 @@
-<div class="row my-4">
+<div class="row my-4" *ngIf="employArr.length > 0">
   <div class="col-md-10">
-    <mat-form-field appearance="standard" class="w-100">
+    <mat-form-field appearance="outline" class="w-100">
       <mat-label class="filterLabel">Filter</mat-label>
       <input
         matInput
@@ -22,8 +22,8 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-12">
+<div class="row" *ngIf="employArr.length > 0; else noData">
+  <div class="col-md-12">
     <div class="table-responsive">
       <table
         mat-table
@@ -48,11 +48,13 @@
               {{ row.firstName }}
             </ng-container>
             <ng-template #editFirstName>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'firstName')"
-                type="text"
-              />
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'firstName')"
+                  type="text"
+                />
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -65,11 +67,13 @@
               {{ row.lastName }}
             </ng-container>
             <ng-template #editLastName>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'lastName')"
-                type="text"
-              />
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'lastName')"
+                  type="text"
+                />
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -82,11 +86,13 @@
               {{ row.email }}
             </ng-container>
             <ng-template #editEmail>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'email')"
-                type="email"
-              />
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'email')"
+                  type="email"
+                />
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -99,11 +105,13 @@
               {{ row.contact }}
             </ng-container>
             <ng-template #editContact>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'contact')"
-                type="tel"
-              />
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'contact')"
+                  type="tel"
+                />
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -116,11 +124,13 @@
               {{ row.gender }}
             </ng-container>
             <ng-template #editGender>
-              <mat-select [formControl]="getControl(row.id, 'gender')">
-                <mat-option value="Male">Male</mat-option>
-                <mat-option value="Female">Female</mat-option>
-                <mat-option value="Other">Other</mat-option>
-              </mat-select>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select [formControl]="getControl(row.id, 'gender')">
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                  <mat-option value="Other">Other</mat-option>
+                </mat-select>
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -133,11 +143,13 @@
               {{ row.company }}
             </ng-container>
             <ng-template #editCompany>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'company')"
-                type="text"
-              />
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'company')"
+                  type="text"
+                />
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -150,13 +162,17 @@
               {{ row.education }}
             </ng-container>
             <ng-template #editEducation>
-              <mat-select [formControl]="getControl(row.id, 'education')">
-                <mat-option value="SSC">SSC</mat-option>
-                <mat-option value="HSC">HSC</mat-option>
-                <mat-option value="Diploma">Diploma</mat-option>
-                <mat-option value="Graduation">Graduation</mat-option>
-                <mat-option value="Post Graduation">Post Graduation</mat-option>
-              </mat-select>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select [formControl]="getControl(row.id, 'education')">
+                  <mat-option value="SSC">SSC</mat-option>
+                  <mat-option value="HSC">HSC</mat-option>
+                  <mat-option value="Diploma">Diploma</mat-option>
+                  <mat-option value="Graduation">Graduation</mat-option>
+                  <mat-option value="Post Graduation"
+                    >Post Graduation</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -169,12 +185,14 @@
               {{ row.experience }} years
             </ng-container>
             <ng-template #editExperience>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'experience')"
-                type="number"
-                min="0"
-              />
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'experience')"
+                  type="number"
+                  min="0"
+                />
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -189,16 +207,18 @@
               {{ row.dob | date : "mediumDate" }}
             </ng-container>
             <ng-template #editDob>
-              <input
-                matInput
-                [formControl]="getControl(row.id, 'dob')"
-                [matDatepicker]="picker"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [formControl]="getControl(row.id, 'dob')"
+                  [matDatepicker]="picker"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
             </ng-template>
           </td>
         </ng-container>
@@ -234,16 +254,20 @@
         <!-- No Data Row -->
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="10">
-            No data matching the filter "{{ input.value }}"
+            No data matching the filter "{{ filterText }}"
           </td>
         </tr>
       </table>
-      <mat-paginator
-        [length]="200"
-        [pageSizeOptions]="[10, 50, 100]"
-        aria-label="Select page"
-      >
-      </mat-paginator>
     </div>
+    <mat-paginator
+      [length]="200"
+      [pageSizeOptions]="[10, 50, 100]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
   </div>
 </div>
+
+<ng-template #noData>
+  <p class="alert text-center">No data available</p>
+</ng-template>

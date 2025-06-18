@@ -6,6 +6,8 @@ import { Iemployee } from '../../models/employee.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { GetConfirmComponent } from '../get-confirm/get-confirm.component';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -31,10 +33,12 @@ export class EmployeeDashboardComponent implements OnInit {
 
   @ViewChild(MatSort) sort!: MatSort;
   rowForms: { [id: string]: FormGroup } = {};
+  filterText: string = '';
   constructor(
     private _matDialog: MatDialog,
     private _employeeService: EmployeeService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private _snackbar: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -45,12 +49,15 @@ export class EmployeeDashboardComponent implements OnInit {
     matConfig.width = '50%';
     const dialogRef = this._matDialog.open(EmployeeFormComponent, matConfig);
     dialogRef.afterClosed().subscribe((empObj) => {
-    if (empObj) {
-      // Push the new employee object into the dataSource
-      this.employArr = [empObj, ...this.employArr]
-      this.dataSource.data = this.employArr;
-    }
-  });
+      if (empObj) {
+        // Push the new employee object into the dataSource
+        this.employArr = [empObj, ...this.employArr];
+        this.dataSource.data = this.employArr;
+        this._snackbar.openSnackBar(
+          `New Employee ${empObj.firstName} ${empObj.lastName} is added Successfully !!`
+        );
+      }
+    });
   }
 
   getEmployees() {
@@ -68,7 +75,7 @@ export class EmployeeDashboardComponent implements OnInit {
             dob: [emp.dob],
             education: [emp.education],
             company: [emp.company],
-            experience: [emp.exp],
+            experience: [emp.experience],
           });
           return emp;
         });
@@ -79,7 +86,7 @@ export class EmployeeDashboardComponent implements OnInit {
         this.dataSource.sort = this.sort;
       },
       error: (err) => {
-        console.error('Error fetching employees:', err);
+        console.error(err);
       },
     });
   }
@@ -88,6 +95,7 @@ export class EmployeeDashboardComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value
       .trim()
       .toLowerCase();
+    this.filterText = filterValue;
     this.dataSource.filter = filterValue;
   }
 
@@ -97,19 +105,20 @@ export class EmployeeDashboardComponent implements OnInit {
 
   onSave(row: Iemployee) {
     const updatedData = this.rowForms[row.id].value;
-
     const newData: Iemployee = {
       ...updatedData,
       id: row.id,
     };
-
     this._employeeService.updateEmployee(row.id, newData).subscribe({
       next: () => {
         row.isEditMode = false;
-        Object.assign(row, newData); // Update UI
+        Object.assign(row, newData);
+        this._snackbar.openSnackBar(
+          `The Employee ${newData.firstName} ${newData.lastName} is updated Successfully !!`
+        );
       },
       error: (err) => {
-        console.error('Error updating employee', err);
+        console.error(err);
       },
     });
   }
@@ -122,11 +131,32 @@ export class EmployeeDashboardComponent implements OnInit {
     }
   }
 
-  onDelete(row: any){
+  onDelete(row: Iemployee) {
+    const dailogRef = this._matDialog.open(GetConfirmComponent, {
+      width: '350px',
+      disableClose: true,
+      data: {
+        message: `Are you sure you want to delete ${row.firstName} ${row.lastName}?`,
+      },
+    });
 
+    dailogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this._employeeService.deleteEmployee(row.id).subscribe({
+          next: (res) => {
+            this._snackbar.openSnackBar(
+          `The Employee ${row.firstName} ${row.lastName} is removed Successfully !!`
+        );
+          },
+          error: (err) => {
+            console.error(err);
+          },
+        });
+      }
+    });
   }
 
   getControl(rowId: string, controlName: string): FormControl {
-  return this.rowForms[rowId].get(controlName) as FormControl;
-}
+    return this.rowForms[rowId].get(controlName) as FormControl;
+  }
 }
